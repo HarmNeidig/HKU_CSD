@@ -18,3 +18,5 @@ while trigger==0:
                 while time() < init_time+delay: pass
     else:
         print("Error: voer een nummer in")
+
+# hi
