@@ -15,6 +15,6 @@ while trigger==0:
             play_obj = wave_obj.play()
             def pause(delay):
                 init_time = time()
-                while time() < init_time+delay: pass
+                while time() < init_time + delay: pass
     else:
         print("Error: voer een nummer in")
