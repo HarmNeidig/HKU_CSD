@@ -1,56 +1,64 @@
 # []
 import simpleaudio as sa
+import time as t
+import random as r
+from graphics import *
 # import numpy
 
 Amount16th = 16
-hatTimeStamps = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-snareTimeStamps = [1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0]
+repeats = 2
+
+bpm = 120
+Sin4th = 60.0 / bpm
+Sin8th = float(Sin4th / 2)
+Sin16th = float(Sin8th / 2)
+
+
+print("16th length in secs = ", Sin16th)
+
+hatTimeStamps = [1,0.5,1,0.5,1,0.5,1,0.5,1,0.5,1,0.5,1,0.5,1,0.5]
+snareTimeStamps = [1,0,0.5,0,0,0,1,0,1,0,0.5,0,1,0,0.2,0.2]
 kickTimeStamps = [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0]
 masArray = []
-Ts_Array = []
 
 kick = sa.WaveObject.from_wave_file("kick.wav")
 snare = sa.WaveObject.from_wave_file("snare.wav")
 hat = sa.WaveObject.from_wave_file("hihat.wav")
 
-# make a master array [timestamp[h,s,k][][][]]
-
-matrix = []
-
-def makeMatrix():
-    for i in range(len(Amount16th)):
-        matrix.append([hatTimeStamps[i], snareTimeStamps[i], kickTimeStamps[i]])
-
-print(matrix)
-
-'''
+# make a master array [[h,s,k][][][]] index = timestamp
 def makeMasArray(lstHat, lstSnare, lstKick):
     for i in range(0,Amount16th):
-        Ts_filled = False
+        Ts_Array = []
         # makes arrays of three
-        while Ts_filled == False:
-            Ts_Array.append(lstHat[i])
-            Ts_Array.append(lstSnare[i])
-            Ts_Array.append(lstKick[i])
-            Ts_filled = True
+        Ts_Array.append(lstHat[i])
+        Ts_Array.append(lstSnare[i])
+        Ts_Array.append(lstKick[i])
         masArray.append(Ts_Array)
-        return
-        Ts_Array.clear()
+#        print(Ts_Array)
+    return
+
 
 makeMasArray(hatTimeStamps,snareTimeStamps,kickTimeStamps)
+print(masArray)
 
 #handles individual events
 def eventHandler(lst):
     for array in lst:
-        if array[0] == 1:
+        hatSeed = r.random()
+        print(hatSeed)
+        if array[0] >= hatSeed:
             hat.play()
-        if array[1] == 1:
+        if array[1] >= hatSeed:
+            print("snare trigger bc ",array[1]," >= ", hatSeed)
             snare.play()
         if array[2] == 1:
             kick.play()
+        t.sleep(Sin16th)
+    quit()
 
-eventHandler(masArray)
-'''
+
+
+
+eventHandler(masArray*repeats)
+
 #loop over Amount16th and if 0 == 1 than play hihat if 1 == 1 play snare if 2 == 1 play kickTimeStamps
-
-print(masArray)
