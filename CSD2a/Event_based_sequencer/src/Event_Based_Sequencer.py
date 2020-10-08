@@ -36,7 +36,6 @@ def makeMasArray(lstHat, lstSnare, lstKick):
         Ts_Array.append(lstSnare[i])
         Ts_Array.append(lstKick[i])
         masArray.append(Ts_Array)
-#        print(Ts_Array)
     return
 
 
