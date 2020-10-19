@@ -4,10 +4,10 @@ import time as t
 import random as r
 
 Amount16th = 16
-repeats = 6
+repeats = 1
 
 # define bpm and calculate to time
-bpm = 350
+bpm = 120
 Sin4th = 60.0 / bpm
 Sin8th = float(Sin4th / 2)
 Sin16th = float(Sin8th / 2)
