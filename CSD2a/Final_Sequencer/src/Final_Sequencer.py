@@ -161,7 +161,7 @@ def makeMidiFile():
     if a == "n":
         quit()
 
-# Error handeling for the bpm input
+# Error handling for the bpm input
 def inputBpm():
     global Sin4th, Sin8th, Sin16th, bpm
     bpm = (input("What should the BPM be? Type an int "))
@@ -179,7 +179,7 @@ def inputBpm():
         print("please type an int")
         inputBpm()
 
-# Error handeling for the amount of 16th input
+# Error handling for the amount of 16th input
 def inputAmount():
     global Amount16th, Amount8th
     Amount16th = (input("How many 16th in a measure? Type an int "))
@@ -195,7 +195,7 @@ def inputAmount():
         print("please type an int")
         inputAmount()
 
-# Error handeling for the hihat input
+# Error handling for the hihat input
 def inputHat():
     global hatTimingInput
     hatTimingInput = input("Do you want the hihat to play 8ths or 16ths? Type 8 or 16 ")
@@ -213,7 +213,7 @@ def inputHat():
         print("please type an int")
         inputHat()
 
-# Error handeling for the snare amount input
+# Error handling for the snare amount input
 def inputAmountSnare():
     global snareAmountInput
     snareAmountInput = input("How many snares do you want in your beat? ")
@@ -228,7 +228,7 @@ def inputAmountSnare():
         print("please type an int")
         inputAmountSnare()
 
-# Error handeling for the snare rotation input
+# Error handling for the snare rotation input
 def inputRotSnare():
     global snareRotInput
     snareRotInput = input("Do you want to rotate your snare list? if not type 0, else type an int with the rotation amount ")
@@ -238,7 +238,7 @@ def inputRotSnare():
         print("please type an int")
         inputRotSnare()
 
-# Error handeling for the snare probablity input
+# Error handling for the snare probablity input
 def inputProbSnare():
     global snareProbablityInput
     snareProbablityInput = input("What is the probablity that those snares will play. 1.0 = Certain, 0.5 = 50/50 ")
@@ -259,7 +259,7 @@ def inputProbSnare():
         print("please type an float")
         inputProbSnare()
 
-# Error handeling for the kick amount input
+# Error handling for the kick amount input
 def inputAmountKick():
     global kickAmountInput
     kickAmountInput = input("How many kicks do you want in your beat? ")
@@ -274,7 +274,7 @@ def inputAmountKick():
         print("please type an int")
         inputAmountKick()
 
-# Error handeling for the kick probablity input
+# Error handling for the kick probablity input
 def inputProbKick():
     global kickProbablityInput
     kickProbablityInput = input("What is the probablity that those snares will play. 1.0 = Certain, 0.5 = 50/50 ")
@@ -292,7 +292,7 @@ def inputProbKick():
         print("please type an float")
         inputProbKick()
 
-# Error handeling for the repeat input
+# Error handling for the repeat input
 def inputRepeat():
     global repeats
     repeats = input("How often do you want to loop the rhythm? type an int ")
