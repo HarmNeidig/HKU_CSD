@@ -131,9 +131,9 @@ def eventHandler(lst):
         t.sleep(Sin16th)
 
 # Define midi notes
-kickMidiNote = 24
-snareMidiNote = 26
-hatMidiNote = 30
+kickMidiNote = 36
+snareMidiNote = 38
+hatMidiNote = 42
 
 # Function to convert the master midi array to the midi file
 def eventHandlerMidi(lst):
