@@ -3,6 +3,8 @@
 
 int main()
 {
-Dog snoop(49);
+Dog snoop;
+  snoop.inputAge();
+  snoop.checkAge();
   return 0;
 }
