@@ -1,5 +1,5 @@
 #include<iostream>
-#include"Instrument.h"
+#include"Instrument_class.h"
 // constructor
 Instrument_class::Instrument_class()
 {

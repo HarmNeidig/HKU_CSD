@@ -1,8 +1,9 @@
 #include<iostream>
-#include"Instrument.h"
+#include"Instrument_class.h"
+
 
 int main(){
-  Instrument_class Guitar;
-  Guitar.setAmp(60);
+Instrument_class Guitar;
+  Guitar.setAmp(40);
   return 0;
 }
