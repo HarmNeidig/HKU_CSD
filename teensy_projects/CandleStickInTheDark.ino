@@ -42,6 +42,7 @@ void loop() {
       }
       if (monoPeak > 85.0){
         blowState = monoPeak;
+        delay(20);
       } else {
         blowState = 0;
       }
