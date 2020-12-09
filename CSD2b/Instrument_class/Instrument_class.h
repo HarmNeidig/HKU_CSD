@@ -1,9 +1,11 @@
 class Instrument_class
 {
 public:
-  Instrument_class(int NewAmp);
+  int newAmp;
+  Instrument_class();
   ~Instrument_class();
-  void play();
+  void setAmp(int newAmp);
+  int getAmp();
 private:
   int Amp;
 };
