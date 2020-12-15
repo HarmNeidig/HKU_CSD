@@ -4,7 +4,7 @@ class Instrument_class
 {
 public:
   // constructor
-  Instrument_class(std::string name);
+  Instrument_class(std::string name, std::string sound);
   // destrutor
   ~Instrument_class();
   // setters
@@ -14,6 +14,7 @@ public:
   // getters
   int getAmp();
   std::string getName();
+  std::string getSound();
   int getRange();
   // method
   void play();
@@ -21,6 +22,7 @@ protected:
   int range;
   int amp;
   std::string name;
+  std::string sound;
 };
 
 #endif

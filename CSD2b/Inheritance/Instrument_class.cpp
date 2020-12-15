@@ -2,9 +2,10 @@
 #include"Instrument_class.h"
 
 // constructor
-Instrument_class::Instrument_class(std::string name)
+Instrument_class::Instrument_class(std::string name, std::string sound)
 {
   this->name = name;
+  this->sound = sound;
   std::cout << "Start Instrument" << std::endl;
 }
 
@@ -48,9 +49,14 @@ int Instrument_class::getRange()
 std::string Instrument_class::getName(){
   return name;
 }
+
+std::string Instrument_class::getSound(){
+  return sound;
+}
 // play method
 void Instrument_class::play(){
   std::cout << getName() << " is playing with a range of "
   << getRange() << " and an amp of " <<
   getAmp() << "." << std::endl;
+  std::cout << getName() << " goes " << getSound() << std::endl;
 }

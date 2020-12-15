@@ -2,7 +2,7 @@
 #include"Guitar_subclass.h"
 
 
-Guitar_subclass::Guitar_subclass(std::string name) : Instrument_class(name)
+Guitar_subclass::Guitar_subclass(std::string name, std::string sound) : Instrument_class(name, sound)
 {
   std::cout << "Guitar begins" << std::endl;
 }

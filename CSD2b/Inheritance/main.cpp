@@ -4,8 +4,8 @@
 #include"Bass_subclass.h"
 
 int main(){
-  Guitar_subclass Guitar("guitar");
-  Bass_subclass Bass("bassssss");
+  Guitar_subclass Guitar("guitar", "ploink");
+  Bass_subclass Bass("bassssss", "brrrrr");
   Guitar.setRange(20);
   Bass.setRange(2);
   Bass.setAmp(99);

@@ -2,7 +2,7 @@
 #include"Bass_subclass.h"
 
 
-Bass_subclass::Bass_subclass(std::string name) : Instrument_class(name)
+Bass_subclass::Bass_subclass(std::string name, std::string sound) : Instrument_class(name, sound)
 {
   std::cout << "Bass begins" << std::endl;
 }
