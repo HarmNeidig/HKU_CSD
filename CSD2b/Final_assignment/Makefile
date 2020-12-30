@@ -4,8 +4,8 @@ LDFLAGS= -ljack
 
 all: HarmSynth
 
-HarmSynth : osc.o sine.o jack_module.o main.o
-	$(CC) -o $@ $(CFLAGS) osc.o sine.o jack_module.o main.o $(LDFLAGS)
+HarmSynth : osc.o square.o saw.o sine.o jack_module.o main.o
+	$(CC) -o $@ $(CFLAGS) osc.o square.o saw.o sine.o jack_module.o main.o $(LDFLAGS)
 
 .cpp.o:
 	$(CC) -c $< $(CFLAGS)

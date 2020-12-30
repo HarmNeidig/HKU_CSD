@@ -1,15 +1,15 @@
-#ifndef _SINE_H_
-#define _SINE_H_
+#ifndef _SQUARE_H_
+#define _SQUARE_H_
 #include"osc.h"
 #include <iostream>
 
 
-class Sine : public Osc
+class Square : public Osc
 {
 public:
   //Constructor and destructor
-  Sine(float frequency, double samplerate);
-  ~Sine();
+  Square(float frequency, double samplerate);
+  ~Square();
   // go to next sample
   void tick();
 };

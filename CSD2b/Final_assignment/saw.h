@@ -1,15 +1,15 @@
-#ifndef _SINE_H_
-#define _SINE_H_
+#ifndef _SAW_H_
+#define _SAW_H_
 #include"osc.h"
 #include <iostream>
 
 
-class Sine : public Osc
+class Saw : public Osc
 {
 public:
   //Constructor and destructor
-  Sine(float frequency, double samplerate);
-  ~Sine();
+  Saw(float frequency, double samplerate);
+  ~Saw();
   // go to next sample
   void tick();
 };
