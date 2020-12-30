@@ -9,6 +9,7 @@ public:
   Osc(float frequency, double samplerate);
   // Destructor
   ~Osc();
+  float getSample();
   void setFrequency(float frequency);
   float getFrequency();
 protected:
