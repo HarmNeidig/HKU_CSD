@@ -11,7 +11,7 @@ public:
   Sine(float frequency, double samplerate);
   ~Sine();
   // go to next sample
-  float tick();
+  void tick();
 private:
   double samplerate;
   float frequency;
