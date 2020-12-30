@@ -1,5 +1,6 @@
 #ifndef _SINE_H_
 #define _SINE_H_
+#include"osc.h"
 #include <iostream>
 
 
@@ -10,10 +11,8 @@ public:
   Sine(float frequency, double samplerate);
   ~Sine();
   // go to next sample
-  void tick();
-  float getSample();
+  float tick();
 private:
-  float amplitude;
   double samplerate;
   float frequency;
   float phase;

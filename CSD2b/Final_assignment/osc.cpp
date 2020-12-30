@@ -3,7 +3,7 @@
 
 // Constructor
 Osc::Osc(float frequency, double samplerate) : frequency(frequency),
-  samplerate(samplerate), amplitude(0.5), sample(0), phase(0)
+  samplerate(samplerate), sample(0), phase(0)
   {
     std::cout << "Oscillator begins" << std::endl;
 }

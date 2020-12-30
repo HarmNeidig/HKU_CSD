@@ -2,6 +2,7 @@
 #ifndef _OSC_H_
 #define _OSC_H_
 
+
 class Osc
 {
 public:
@@ -13,7 +14,6 @@ public:
   void setFrequency(float frequency);
   float getFrequency();
 protected:
-  float amplitude;
   double samplerate;
   float frequency;
   float phase;
