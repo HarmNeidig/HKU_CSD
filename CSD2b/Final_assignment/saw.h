@@ -8,7 +8,7 @@ class Saw : public Osc
 {
 public:
   //Constructor and destructor
-  Saw(float frequency, double samplerate);
+  Saw(double frequency, double samplerate);
   ~Saw();
   // go to next sample
   void tick();

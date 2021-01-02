@@ -8,7 +8,7 @@ class Sine : public Osc
 {
 public:
   //Constructor and destructor
-  Sine(float frequency, double samplerate);
+  Sine(double frequency, double samplerate);
   ~Sine();
   // go to next sample
   void tick();

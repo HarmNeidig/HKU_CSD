@@ -2,7 +2,7 @@
 #include "math.h"
 
 // Constructor
-Osc::Osc(float frequency, double samplerate) : frequency(frequency),
+Osc::Osc(double frequency, double samplerate) : frequency(frequency),
   samplerate(samplerate)
   {
     std::cout << "Oscillator begins" << std::endl;
@@ -14,7 +14,7 @@ Osc::~Osc(){
   }
 
 // Getter for sample
-float Osc::getSample(){
+double Osc::getSample(){
     return sample;
   }
 

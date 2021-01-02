@@ -7,18 +7,18 @@ class Osc
 {
 public:
   // Constructor
-  Osc(float frequency, double samplerate);
+  Osc(double frequency, double samplerate);
   // Destructor
   ~Osc();
-  float getSample();
+  double getSample();
   void setFrequency(float frequency);
   float getFrequency();
 protected:
   double samplerate;
-  float frequency;
-  float phase;
+  double frequency;
+  double phase;
   // single current sample to be put out
-  float sample;
+  double sample;
 };
 
 #endif

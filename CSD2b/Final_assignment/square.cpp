@@ -1,7 +1,7 @@
 #include "square.h"
 #include "math.h"
 
-Square::Square(float frequency, double samplerate) : Osc(frequency, samplerate)
+Square::Square(double frequency, double samplerate) : Osc(frequency, samplerate)
   {
   std::cout << "Square - constructor" << std::endl;
 }

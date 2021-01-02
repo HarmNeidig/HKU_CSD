@@ -8,7 +8,7 @@ class Square : public Osc
 {
 public:
   //Constructor and destructor
-  Square(float frequency, double samplerate);
+  Square(double frequency, double samplerate);
   ~Square();
   // go to next sample
   void tick();

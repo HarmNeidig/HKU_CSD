@@ -1,7 +1,7 @@
 #include "sine.h"
 #include "math.h"
 
-Sine::Sine(float frequency, double samplerate) : Osc(frequency, samplerate)
+Sine::Sine(double frequency, double samplerate) : Osc(frequency, samplerate)
   {
   std::cout << "Sine - constructor" << std::endl;
 }

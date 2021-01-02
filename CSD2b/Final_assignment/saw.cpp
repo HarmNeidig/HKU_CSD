@@ -1,7 +1,7 @@
 #include "saw.h"
 #include "math.h"
 
-Saw::Saw(float frequency, double samplerate) : Osc(frequency, samplerate)
+Saw::Saw(double frequency, double samplerate) : Osc(frequency, samplerate)
   {
   std::cout << "Saw - constructor" << std::endl;
 }
