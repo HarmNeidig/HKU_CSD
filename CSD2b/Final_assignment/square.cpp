@@ -10,8 +10,7 @@ Square::~Square() {
   std::cout << "Square - destructor" << std::endl;
 }
 
-void Square::tick() {
-  phase += frequency / samplerate;
+void Square::calculate() {
   double x = 0;
   for(unsigned int i = 0; i<70; i++)
   {

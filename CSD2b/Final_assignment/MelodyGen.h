@@ -14,22 +14,25 @@ public:
   // gives a seed to rand()
   void init();
   // generates a random number in the key
-  int generateMidiSine();
-  int generateMidiSaw(int midiSine);
-  int generateMidiSquare(int midiSine);
+  int generateMidiRoot();
+  int generateMidiThird(int midiRoot);
+  int generateMidiFifth(int midiRoot);
   // function to convert a midi note to a freq
   double mtof(int midiValue);
   // gets the frequencies
-  double getFreqSine(int midiSine);
-  double getFreqSaw(int midiSaw);
-  double getFreqSquare(int midiSquare);
+  double getFreqRoot(int midiRoot);
+  double getFreqThird(int midiThird);
+  double getFreqFifth(int midiFifth);
 protected:
+  int midiRoot;
+  int midiThird;
+  int midiFifth;
   int randNote;
   int scale[7] = {0,2,4,5,7,9,11};
   int key;
-  double freqSine;
-  double freqSaw;
-  double freqSquare;
+  double freqRoot;
+  double freqThird;
+  double freqFifth;
   int midivalue;
 };
 

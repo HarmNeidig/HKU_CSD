@@ -11,7 +11,7 @@ public:
   Saw(double frequency, double samplerate);
   ~Saw();
   // go to next sample
-  void tick();
+  void calculate();
 };
 
 #endif

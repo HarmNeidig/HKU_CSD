@@ -24,28 +24,28 @@ void MelodyGen::init(){
   srand(std::time(0));
 }
 
-int MelodyGen::generateMidiSine(){
+int MelodyGen::generateMidiRoot(){
   randNote = (rand() % 3)+(rand() % 4);
   int midiSine = (scale[randNote]);
-  return midiSine;
+  return midiRoot;
 }
 
-int MelodyGen::generateMidiSaw(int midiSine){
+int MelodyGen::generateMidiThird(int midiRoot){
   int index = ((randNote + 2) % 7);
-  int midiSaw = scale[index];
-  if (midiSaw < midiSine){
-    midiSaw+=12;
+  int midiThird = scale[index];
+  if (midiThird < midiRoot){
+    midiThird+=12;
   }
-  return midiSaw;
+  return midiThird;
 }
 
-int MelodyGen::generateMidiSquare(int midiSine){
+int MelodyGen::generateMidiFifth(int midiRoot){
   int index = ((randNote + 4) % 7);
-  int midiSquare = scale[index];
-  if (midiSquare < midiSine){
-    midiSquare+=12;
+  int midiFifth = scale[index];
+  if (midiFifth < midiRoot){
+    midiFifth+=12;
   }
-  return midiSquare;
+  return midiFifth;
 }
 
 double MelodyGen::mtof(int midiValue){
@@ -53,17 +53,17 @@ double MelodyGen::mtof(int midiValue){
   return (a / 32) * pow(2, ((midiValue - 9) / 12));
 }
 
-double MelodyGen::getFreqSine(int midiSine){
-  freqSine = mtof(midiSine);
-  return freqSine;
+double MelodyGen::getFreqRoot(int midiRoot){
+  freqRoot = mtof(midiRoot);
+  return freqRoot;
 }
 
-double MelodyGen::getFreqSaw(int midiSaw){
-  freqSaw = mtof(midiSaw);
-  return freqSaw;
+double MelodyGen::getFreqThird(int midiThird){
+  freqThird = mtof(midiThird);
+  return freqThird;
 }
 
-double MelodyGen::getFreqSquare(int midiSquare){
-  freqSquare = mtof(midiSquare);
-  return freqSquare;
+double MelodyGen::getFreqFifth(int midiFifth){
+  freqFifth = mtof(midiFifth);
+  return freqFifth;
 }

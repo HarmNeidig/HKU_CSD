@@ -11,8 +11,10 @@ public:
   // Destructor
   ~Osc();
   double getSample();
-  void setFrequency(float frequency);
+  void setFrequency(double frequency);
   float getFrequency();
+  void tick();
+  virtual void calculate() = 0;
 protected:
   double samplerate;
   double frequency;

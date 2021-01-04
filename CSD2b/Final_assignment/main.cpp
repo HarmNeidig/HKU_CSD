@@ -9,6 +9,7 @@
 #include "square.h"
 #include "melodyGen.h"
 #include "synthesizer.h"
+#include "time.h"
 
 // Replace with math library M_PI
 
@@ -20,16 +21,14 @@ int main(int argc,char **argv)
   JackModule jack;
   jack.init(argv[0]);
   double samplerate=jack.getSamplerate();
-  MelodyGen chords;
-  Synthesizer synth (440, samplerate);
-  Oscillator* osc = synth.chooseOsc(1);
-
-  jack.onProcess = [&synth](jack_default_audio_sample_t *inBuf,
+  Synthesizer synthSine(440, samplerate);
+  Osc* osc1 = synthSine.selectOsc(1);
+  osc1->setFrequency(330);
+  jack.onProcess = [&osc1](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
-
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = synth.getSample();
-      synth.tick();
+      outBuf[i] = osc1->getSample();
+      osc1->tick();
     }
   return 0;
   };

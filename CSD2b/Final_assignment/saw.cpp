@@ -10,10 +10,9 @@ Saw::~Saw() {
   std::cout << "Saw - destructor" << std::endl;
 }
 
-void Saw::tick() {
+void Saw::calculate() {
   phase += frequency / samplerate;
   double x = 0;
-  //??Nyquist frequency interaction?
   for(unsigned int i = 1; i<150; i++)
   {
     x += (sin(M_PI * 2 * phase * i))/i;

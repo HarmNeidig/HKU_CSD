@@ -10,7 +10,7 @@ Sine::~Sine() {
   std::cout << "Sine - destructor" << std::endl;
 }
 
-void Sine::tick() {
+void Sine::calculate() {
   phase += frequency / samplerate;
   sample = sin(M_PI * 2 * phase);
 }

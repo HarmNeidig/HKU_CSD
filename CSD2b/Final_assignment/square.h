@@ -11,7 +11,7 @@ public:
   Square(double frequency, double samplerate);
   ~Square();
   // go to next sample
-  void tick();
+  void calculate();
 };
 
 #endif
