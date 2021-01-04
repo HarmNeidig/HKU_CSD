@@ -5,7 +5,7 @@
 
 class MelodyGen{
 public:
-  MelodyGen(int key);
+  MelodyGen();
   ~MelodyGen();
   // sets the key for the chord progression
   void setKey(int key);

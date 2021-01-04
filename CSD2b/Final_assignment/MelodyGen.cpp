@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-MelodyGen::MelodyGen(int key){
+MelodyGen::MelodyGen(){
     std::cout << "Melody generator begins" << std::endl;
 }
 

@@ -12,15 +12,11 @@ Saw::~Saw() {
 
 void Saw::tick() {
   phase += frequency / samplerate;
-  double y = 0;
-  //Saw waves are buildup of all harmonics.
-  //So if freq= 100, all harmonics are 100 * x | where x = the number of the harmonic
-  //Here I use an abritrary number of 80
-  //TO DO || Make it so the harmonics have different amplitudes.
+  double x = 0;
   //??Nyquist frequency interaction?
   for(unsigned int i = 1; i<150; i++)
   {
-    y += (sin(M_PI * 2 * phase * i))/i;
+    x += (sin(M_PI * 2 * phase * i))/i;
   }
-  sample = y;
+  sample = x;
 }
