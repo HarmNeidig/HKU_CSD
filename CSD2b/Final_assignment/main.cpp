@@ -7,6 +7,8 @@
 #include "sine.h"
 #include "saw.h"
 #include "square.h"
+#include "melodyGen.h"
+#include "synthesizer.h"
 
 // Replace with math library M_PI
 
@@ -18,6 +20,15 @@ int main(int argc,char **argv)
   JackModule jack;
   jack.init(argv[0]);
   double samplerate=jack.getSamplerate();
+  MelodyGen simpleSine(5);
+//  Synthesizer synth(440, samplerate);
+  simpleSine.init();
+  int root = simpleSine.generateMidiSine();
+  std::cout << root << std::endl;
+  int third = simpleSine.generateMidiSaw(root);
+  std::cout << simpleSine.generateMidiSaw(third) << std::endl;
+  int kwint = simpleSine.generateMidiSquare(root);
+  std::cout << simpleSine.generateMidiSquare(kwint) << std::endl;
   Sine sine(0,samplerate);
   Saw saw(0,samplerate);
   Square square(0,samplerate);
