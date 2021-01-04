@@ -1,6 +1,5 @@
 #include<iostream>
 #include "osc.h"
-#include "sine.h"
 #include "synthesizer.h"
 
 
