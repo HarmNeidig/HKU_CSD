@@ -5,11 +5,22 @@
 
 int main()
 {
+  std::cout << "-----------pass by value------------\n";
   for (int i = 50; i > 0; i--){
-    std::string name = "square";
-    name += std::to_string(i);
     square name;
-    name.setNum(i);
+    name.setNumValue(i);
+    std::cout << i << " squared is " << name.calculate() << std::endl;
+  }
+  std::cout << "-----------pass by refrence------------\n";
+  for (int i = 50; i > 0; i--){
+    square name;
+    name.setNumRefrence(&i);
+    std::cout << i << " squared is " << name.calculate() << std::endl;
+  }
+  std::cout << "-----------pass by pointer------------\n";
+  for (int i = 50; i > 0; i--){
+    square name;
+    name.setNumPointer(*i);
     std::cout << i << " squared is " << name.calculate() << std::endl;
   }
   return 0;

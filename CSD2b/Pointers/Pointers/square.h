@@ -6,7 +6,9 @@ public:
   square();
   ~square();
   //setter
-  void setNum(int x);
+  void setNumValue(int x);
+  void setNumRefrence(int &x);
+  void setNumPointer(int *x);
   //getter
   int getNum();
   int calculate();

@@ -10,7 +10,17 @@ square::~square()
   std::cout << "done calculating square" << std::endl;
 }
 
-void square::setNum(int x)
+void square::setNumValue(int x)
+{
+  this->x = x;
+}
+
+void square::setNumRefrence(int &x)
+{
+  this->x = x;
+}
+
+void square::setNumRefrence(int *x)
 {
   this->x = x;
 }
