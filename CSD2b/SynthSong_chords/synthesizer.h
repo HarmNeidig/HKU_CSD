@@ -12,6 +12,7 @@ public:
   ~Synthesizer();
   Osc* selectOsc(int numOsc);
 private:
+  Osc* osc;
   double frequency;
   double samplerate;
 };

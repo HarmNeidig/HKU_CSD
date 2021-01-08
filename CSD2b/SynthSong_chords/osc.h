@@ -1,3 +1,6 @@
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 #include<iostream>
 #ifndef _OSC_H_
 #define _OSC_H_

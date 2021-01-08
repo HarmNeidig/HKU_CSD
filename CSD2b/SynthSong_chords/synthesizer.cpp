@@ -15,7 +15,6 @@ Synthesizer::~Synthesizer(){
 }
 
 Osc* Synthesizer::selectOsc(int numOsc){
-  Osc* osc = nullptr;
   if(numOsc == 1){
   osc =  new Sine(frequency, samplerate);
 } else if(numOsc == 2) {

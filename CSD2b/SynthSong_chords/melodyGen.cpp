@@ -2,6 +2,7 @@
 #include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
 #include<time.h>
 
 MelodyGen::MelodyGen(){
@@ -21,12 +22,12 @@ int MelodyGen::getKey(){
 }
 
 void MelodyGen::init(){
-  srand(std::time(0));
+  srand(std::time(NULL));
 }
 
 int MelodyGen::generateMidiRoot(){
   randNote = (rand() % 3)+(rand() % 4);
-  int midiSine = (scale[randNote]);
+  int midiRoot = (scale[randNote]);
   return midiRoot;
 }
 

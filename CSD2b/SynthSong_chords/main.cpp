@@ -1,3 +1,6 @@
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 #include<iostream>
 #include<thread>
 #include<string>
@@ -21,14 +24,17 @@ int main(int argc,char **argv)
   mellow.init();
   jack.init(argv[0]);
   double samplerate=jack.getSamplerate();
-  Synthesizer synthSine(0, samplerate);
-  int oscSelection;
+  Synthesizer synth1(0, samplerate);
+  int oscSelection = 0;
   std::cout << "What waveform do you want to use?\n";
   std::cout << "1 for Sine\n";
   std::cout << "2 for Saw\n";
   std::cout << "3 for Square\n";
   std::cout << "Your choice: ";
   std::cin >> oscSelection;
+  Osc* root = synth1.selectOsc(oscSelection);
+//  Osc* third = synth1.selectOsc(oscSelection);
+//  Osc* fifth = synth1.selectOsc(oscSelection);
   int amountNotes;
   std::cout << "How many notes do you want to generate? \n";
   std::cin >> amountNotes;
@@ -48,33 +54,37 @@ int main(int argc,char **argv)
   std::cout << "11 for B\n";
   std::cout << "Your choice: ";
   std::cin >> keyOfChords;
-  Osc* root = synthSine.selectOsc(oscSelection);
-  Osc* third = synthSine.selectOsc(oscSelection);
-  Osc* fifth = synthSine.selectOsc(oscSelection);
   mellow.setKey(keyOfChords);
-  jack.onProcess = [&root,&third,&fifth](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&root](jack_default_audio_sample_t *inBuf,
       jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-          outBuf[i] = ((root->getSample()+third->getSample()+fifth->getSample())/3);
+          outBuf[i] = root->getSample();
           root->tick();
-          third->tick();
-          fifth->tick();
+//          third->tick();
+//          fifth->tick();
     }
   return 0;
   };
   jack.autoConnect();
 
-  std::cout << "Press x to abort" << std::endl;
+  std::cout << "Press 1 to abort\n";
+  std::cout << "Press 0 to new chords in same key\n";
+  std::cout << "Press 5 to transpose\n";
+  int userInput;
+  std::cin >> userInput;
+
   bool running = true;
   while (running)
   {
-    switch(std::cin.get())
+    switch(userInput)
     {
-      case 'x':
+      case 1:
         running = false;
         jack.end();
         break;
-      case 'n':
+      }
+/*
+      case 2:
         int newMidiRoot=mellow.generateMidiRoot();
         int newMidiThird=mellow.generateMidiThird(newMidiRoot);
         int newMidiFifth=mellow.generateMidiFifth(newMidiRoot);
@@ -82,11 +92,12 @@ int main(int argc,char **argv)
         third->setFrequency(mellow.getFreq(newMidiThird));
         fifth->setFrequency(mellow.getFreq(newMidiFifth));
         break;
-      case 'k':
-        newKey=mellow.generateRandomKey();
+      case 3:
+        int newKey=mellow.generateRandomKey();
         mellow.setKey(newKey);
         break;
+        */
     }
+    return 0;
+
   }
-  return 0;
-}
