@@ -12,10 +12,10 @@ public:
   FM_Synth(double frequency, double samplerate, double ratio);
   ~FM_Synth();
   void setFreqAndRatio(double frequency, double ratio);
-  Osc* makeCar(double frequency, int numOsc);
-  Osc* makeMod(double frequency, int numOsc, double ratio);
+  Osc* makeCar();
+  Osc* makeMod();
   double getSample();
-  virtual void tick();
+  void tick();
 private:
   Osc* carrier;
   Osc* modulator;

@@ -11,14 +11,14 @@ FM_Synth::~FM_Synth(){
 
 }
 
-Osc* FM_Synth::makeCar(double frequency, int numOsc){
+Osc* FM_Synth::makeCar(){
   if(numOsc == 1){
     carrier =  new Sine(frequency, samplerate);
   /*
   } else if(numOsc == 2) {
-    osc = new Saw(frequency, samplerate);
+    carrier = new Saw(frequency, samplerate);
   } else if(numOsc == 3) {
-    osc = new Square(frequency, samplerate)
+    carrier = new Square(frequency, samplerate)
   */
   } else {
     std::cout << "Error: no osc found" << std::endl;
@@ -26,15 +26,15 @@ Osc* FM_Synth::makeCar(double frequency, int numOsc){
   return carrier;
 }
 
-Osc* FM_Synth::makeMod(double frequency, int numOsc, double ratio){
-  double frequencyModulator = frequency / ratio;
+Osc* FM_Synth::makeMod(){
+  frequencyModulator = frequency / ratio;
   if(numOsc == 1){
     modulator =  new Sine(frequencyModulator, samplerate);
   /*
   } else if(numOsc == 2) {
-    modulator = new Saw(frequency, samplerate);
+    modulator = new Saw(frequencyModulator, samplerate);
   } else if(numOsc == 3) {
-    modulator = new Square(frequency, samplerate)
+    modulator = new Square(frequencyModulator, samplerate)
     */
   } else {
     std::cout << "Error: no osc found" << std::endl;
@@ -43,14 +43,16 @@ Osc* FM_Synth::makeMod(double frequency, int numOsc, double ratio){
 }
 
 double FM_Synth::getSample(){
-  carrierSample=carrier->getSample();
-  modulatorSample=modulator->getSample();
-  sample = carrierSample*modulatorSample;
+  carrierSample=carrier->getSample()*0.5;
+  std::cout << "carrier = " << carrierSample << std::endl;
+  modulatorSample=modulator->getSample()*0.5;
+  sample=carrierSample*modulatorSample;
   return sample;
 }
 
 void FM_Synth::tick(){
-
+  carrier->tick();
+  modulator->tick();
 }
 
 void FM_Synth::setFreqAndRatio(double frequency, double ratio){

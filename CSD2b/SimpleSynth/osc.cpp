@@ -6,7 +6,7 @@
 
 // Constructor
 Osc::Osc(double frequency, double samplerate) : frequency(frequency),
-  samplerate(samplerate),sample(0),phase(0){
+  samplerate(samplerate),phase(0){
     std::cout << "Oscillator begins" << std::endl;
 }
 
@@ -17,16 +17,15 @@ Osc::~Osc(){
 
 void Osc::tick(){
   phase += frequency/samplerate;
-  calculate();
+  calculate(phase);
 }
 
-void Osc::calculate(){
-  
+void Osc::calculate(double phase){
+
 }
 
 // Getter for sample
 double Osc::getSample(){
-    return sample;
 }
 
 void Osc::setFrequency(double frequency){

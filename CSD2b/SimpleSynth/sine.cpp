@@ -6,13 +6,17 @@
 
 Sine::Sine(double frequency, double samplerate) : Osc(frequency, samplerate)
   {
-  std::cout << "Sine - constructor" << std::endl;
+  std::cout << "Sine -- "<< frequency << " Hz" << std::endl;
 }
 
 Sine::~Sine() {
   std::cout << "Sine - destructor" << std::endl;
 }
 
-void Sine::calculate() {
+void Sine::calculate(double phase) {
   sample = sin(M_PI * 2 * phase);
+}
+
+double Sine::getSample(){
+  return sample;
 }

@@ -11,7 +11,10 @@ public:
   Sine(double frequency, double samplerate);
   ~Sine();
   // go to next sample
-  void calculate();
+  void calculate(double phase);
+  double getSample();
+private:
+  double sample;
 };
 
 #endif

@@ -24,14 +24,18 @@ int main(int argc,char **argv)
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  FM_Synth synth(440, samplerate, 1.5);
+  FM_Synth synth(440, samplerate, 2);
+  synth.setFreqAndRatio(100, 50);
+  synth.makeCar();
+  synth.makeMod();
   //assign a function to the JackModule::onProces
   jack.onProcess = [&synth](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = synth.getSample() * 0.1;
+      outBuf[i] = synth.getSample() * 0.2;
+//      std::cout << synth.getSample() << std::endl;
       synth.tick();
     }
 

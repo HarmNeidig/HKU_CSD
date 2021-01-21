@@ -13,11 +13,11 @@ public:
   Osc(double frequency, double samplerate);
   // Destructor
   ~Osc();
-  double getSample();
   void setFrequency(double frequency);
   float getFrequency();
   void tick();
-  virtual void calculate() = 0;
+  virtual double getSample();
+  virtual void calculate(double phase) = 0;
 protected:
   double samplerate;
   double frequency;
