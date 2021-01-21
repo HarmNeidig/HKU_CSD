@@ -16,8 +16,8 @@ public:
   void setFrequency(double frequency);
   float getFrequency();
   void tick();
-  virtual double getSample();
-  virtual void calculate(double phase) = 0;
+  double getSample();
+  virtual void calculate() = 0;
 protected:
   double samplerate;
   double frequency;
