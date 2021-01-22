@@ -17,14 +17,7 @@ Osc::~Osc(){
 
 void Osc::tick(){
   phase += frequency/samplerate;
-  if (phase >= 1){
-    phase = 0;
-  }
-  calculate();
-}
-
-void Osc::calculate(){
-
+  calculate(phase);
 }
 
 // Getter for sample

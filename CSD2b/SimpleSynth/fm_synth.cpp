@@ -3,7 +3,7 @@
 #include"fm_synth.h"
 
 
-FM_Synth::FM_Synth(double frequency, double samplerate, int ratio){
+FM_Synth::FM_Synth(double samplerate){
   std::cout << "FM Constructor" << std::endl;
 }
 
@@ -11,9 +11,9 @@ FM_Synth::~FM_Synth(){
 
 }
 
-Osc* FM_Synth::makeCar(int choiceCar){
+Osc* FM_Synth::makeCar(int choiceCar, double frequencyCarrier){
   if(choiceCar == 1){
-    carrier = new Sine(frequency, samplerate);
+    carrier = new Sine(frequencyCarrier, samplerate);
   /*
   } else if(choiceCar == 2) {
     carrier = new Saw(frequency, samplerate);
@@ -26,8 +26,8 @@ Osc* FM_Synth::makeCar(int choiceCar){
   return carrier;
 }
 
-Osc* FM_Synth::makeMod(int choiceMod){
-  frequencyModulator = frequency / ratio;
+Osc* FM_Synth::makeMod(int choiceMod, double frequencyModulator){
+  std::cout << "freq mod = "<<frequencyModulator << std::endl;
   if(choiceMod == 1){
     modulator =  new Sine(frequencyModulator, samplerate);
   /*
@@ -42,19 +42,33 @@ Osc* FM_Synth::makeMod(int choiceMod){
   return modulator;
 }
 
-double FM_Synth::getSample(){
-  carrierSample=carrier->getSample()*0.5;
-  modulatorSample=modulator->getSample()*0.5;
-  sample=carrierSample*modulatorSample;
-  return sample;
+void FM_Synth::setFreqMod(double frequency){
+  modulator->setFrequency(frequency);
 }
 
-void FM_Synth::tick(){
+void FM_Synth::setFreqCar(double frequency){
+  carrier->setFrequency(frequency);
+}
+
+double FM_Synth::getSampleCar(){
+  carrierSample=carrier->getSample();
+  return carrierSample;
+}
+
+double FM_Synth::getSampleMod(){
+  modulatorSample=modulator->getSample();
+  return modulatorSample;
+}
+
+void FM_Synth::tickAll(){
   carrier->tick();
   modulator->tick();
 }
 
-void FM_Synth::setFreqAndRatio(double frequency, int ratio){
-  this->frequency = frequency;
+void FM_Synth::setFreqWithRatio(double frequency, int ratio){
+  this->frequency = frequencyCarrier;
   this->ratio = ratio;
+  frequencyModulator = frequencyCarrier/ratio;
+  setFreqCar(frequencyCarrier);
+  setFreqMod(frequencyModulator);
 }

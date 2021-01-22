@@ -24,19 +24,20 @@ int main(int argc,char **argv)
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  FM_Synth synth(440, samplerate, 2);
-  Osc* carrier = synth.makeCar(1);
-  Osc* modulator = synth.makeMod(1);
-  synth.setFreqAndRatio(440,100);
+  FM_Synth synth(samplerate);
+  Osc* carrier = synth.makeCar(1, 440.);
+  std::cout<<"carrier freq = "<<carrier->getFrequency()<<std::endl;
+  Osc* modulator = synth.makeMod(1, 4.);
+  std::cout<<"mod freq = "<<modulator->getFrequency()<<std::endl;
+
   //assign a function to the JackModule::onProces
-  jack.onProcess = [&synth,&modulator,&carrier](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&synth](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = synth.getSample() * 0.2;
-      carrier->tick();
-      modulator->tick();
+      outBuf[i] = synth.getSampleCar()*synth.getSampleMod()/2.;
+      synth.tickAll();
     }
 
     return 0;

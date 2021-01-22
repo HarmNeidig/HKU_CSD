@@ -17,12 +17,11 @@ public:
   float getFrequency();
   void tick();
   double getSample();
-  virtual void calculate() = 0;
+  virtual void calculate(double phase) = 0;
+  double phase = 0;
 protected:
   double samplerate;
   double frequency;
-  double phase;
-  // single current sample to be put out
   double sample;
 };
 
