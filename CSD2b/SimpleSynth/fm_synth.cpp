@@ -12,6 +12,7 @@ FM_Synth::~FM_Synth(){
 }
 
 Osc* FM_Synth::makeCar(int choiceCar, double frequencyCarrier){
+  Osc* carrier = nullptr;
   if(choiceCar == 1){
     carrier = new Sine(frequencyCarrier, samplerate);
   /*
@@ -28,6 +29,7 @@ Osc* FM_Synth::makeCar(int choiceCar, double frequencyCarrier){
 
 Osc* FM_Synth::makeMod(int choiceMod, double frequencyModulator){
   std::cout << "freq mod = "<<frequencyModulator << std::endl;
+  Osc* modulator = nullptr;
   if(choiceMod == 1){
     modulator =  new Sine(frequencyModulator, samplerate);
   /*

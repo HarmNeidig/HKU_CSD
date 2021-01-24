@@ -17,7 +17,7 @@ Osc::~Osc(){
 
 void Osc::tick(){
   phase += frequency/samplerate;
-  calculate(phase);
+  calculate();
 }
 
 // Getter for sample
@@ -29,6 +29,6 @@ void Osc::setFrequency(double frequency){
   this->frequency = frequency;
 }
 
-float Osc::getFrequency(){
+double Osc::getFrequency(){
   return frequency;
 }

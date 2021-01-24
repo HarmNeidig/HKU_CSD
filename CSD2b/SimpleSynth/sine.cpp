@@ -13,6 +13,6 @@ Sine::~Sine() {
   std::cout << "Sine - destructor" << std::endl;
 }
 
-void Sine::calculate(double phase) {
+void Sine::calculate() {
   sample = sin(M_PI * 2 * phase);
 }

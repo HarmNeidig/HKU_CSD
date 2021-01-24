@@ -11,7 +11,7 @@ public:
   Sine(double frequency, double samplerate);
   ~Sine();
   // go to next sample
-  void calculate(double phase);
+  void calculate();
 };
 
 #endif

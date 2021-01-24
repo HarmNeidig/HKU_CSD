@@ -31,7 +31,6 @@ private:
   int ratio = 1;
   double frequencyModulator;
   double frequencyCarrier;
-  double sample;
 };
 
 #endif

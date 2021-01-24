@@ -31,13 +31,18 @@ int main(int argc,char **argv)
   std::cout<<"mod freq = "<<modulator->getFrequency()<<std::endl;
 
   //assign a function to the JackModule::onProces
-  jack.onProcess = [&synth](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = synth.getSampleCar()*synth.getSampleMod()/2.;
-      synth.tickAll();
+      outBuf[i] = carrier->getSample()*modulator->getSample()/2.;
+      carrier->tick();
+      modulator->tick();
+
+      if (i == 255){
+        std::cout << "this samp = " << outBuf[i] << std::endl;
+      }
     }
 
     return 0;
@@ -46,6 +51,7 @@ int main(int argc,char **argv)
   jack.autoConnect();
 
   //keep the program running and listen for user input, q = quit
+
   std::cout << "\n\nPress 'q' when you want to quit the program.\n";
   bool running = true;
   while (running)
