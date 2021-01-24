@@ -4,6 +4,8 @@
 #include "math.h"
 #include "osc.h"
 #include "sine.h"
+#include "saw.h"
+#include "square.h"
 #include "synth.h"
 #include "generator.h"
 
@@ -28,34 +30,40 @@ int main(int argc,char **argv)
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  Synth synth(440, samplerate);
-  Osc* carrier = synth.selectOsc(1);
+  Synth synth(880, samplerate);
+  Osc* carrier = synth.selectOsc(3);
   Osc* modulator = synth.selectOsc(1);
-  modulator->setFrequency(1);
+  modulator->setFrequency(8.8);
   //assign a function to the JackModule::onProces
   jack.onProcess = [&carrier,&modulator,&n,&gen](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = (carrier->getSample()*modulator->getSample())/2;
+      // calculate current sample and divide by four so no speakers get hurt
+      outBuf[i] = (carrier->getSample()*modulator->getSample())/4;
+      // in the tick function the next sample is calculated
       carrier->tick();
       modulator->tick();
+      // i goes up to nframes, which is 255
       if (i == 255){
-//        std::cout << "this samp = " << outBuf[i] << std::endl;
         n += 1;
-//        std::cout << n << std::endl;
-        if (n == 300){
+        // using the n as counter for new notes
+        if (n == 500){
+          // reset n
           n = 0;
-            double fqCar = gen.generateNote();
-            double fqMod = gen.generateRatio(fqCar);
-            std::cout << "random note " << fqCar << std::endl;
-            std::cout << "random ratio " << fqMod << std::endl;
-            carrier->setFrequency(fqCar);
-            modulator->setFrequency(fqMod);
+          // generate a note for carrier (C5 - C6)
+          double fqCar = gen.generateNote();
+          // generate a ratio for modulator (which is based on the carrier freq)
+          double fqMod = gen.generateRatio(fqCar);
+          // print generated content
+          std::cout << "random note " << fqCar << std::endl;
+          std::cout << "random ratio " << fqMod << std::endl;
+          // set frequencies
+          carrier->setFrequency(fqCar);
+          modulator->setFrequency(fqMod);
         }
       }
     }
-
     return 0;
   };
 

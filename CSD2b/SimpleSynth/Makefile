@@ -4,8 +4,8 @@ LDFLAGS= -ljack
 
 all: example
 
-example : sine.o osc.o synth.o generator.o jack_module.o main.o
-	$(CC) -o $@ $(CFLAGS) sine.o osc.o synth.o generator.o jack_module.o main.o $(LDFLAGS)
+example : sine.o saw.o square.o osc.o synth.o generator.o jack_module.o main.o
+	$(CC) -o $@ $(CFLAGS) sine.o saw.o square.o osc.o synth.o generator.o jack_module.o main.o $(LDFLAGS)
 
 .cpp.o:
 	$(CC) -c $< $(CFLAGS)

@@ -13,10 +13,13 @@ public:
   Osc(double frequency, double samplerate);
   // Destructor
   ~Osc();
+  // setters and getters
   void setFrequency(double frequency);
   double getFrequency();
-  void tick();
   double getSample();
+  // tick calculates next sample
+  void tick();
+  // calculate is a function in the child class
   virtual void calculate() = 0;
 protected:
   double phase;
