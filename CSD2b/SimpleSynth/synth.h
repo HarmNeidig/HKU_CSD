@@ -7,8 +7,6 @@
 class Synth
 {
 public:
-  //Constructor and destructor
-              // 400 FREQ, 0.5 RATIO = FREQ2 200
   Synth(double frequency,double samplerate);
   ~Synth();
   virtual double getSample();

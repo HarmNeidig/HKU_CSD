@@ -5,6 +5,7 @@
 #include "osc.h"
 #include "sine.h"
 #include "synth.h"
+#include "generator.h"
 
 
 /*
@@ -20,6 +21,8 @@
 int main(int argc,char **argv)
 {
   int n;
+  Generator gen;
+  gen.init();
   // create a JackModule instance
   JackModule jack;
   // init the jack, use program name as JACK client name
@@ -30,7 +33,7 @@ int main(int argc,char **argv)
   Osc* modulator = synth.selectOsc(1);
   modulator->setFrequency(1);
   //assign a function to the JackModule::onProces
-  jack.onProcess = [&carrier,&modulator,&n](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&carrier,&modulator,&n,&gen](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
     for(unsigned int i = 0; i < nframes; i++) {
@@ -43,7 +46,12 @@ int main(int argc,char **argv)
 //        std::cout << n << std::endl;
         if (n == 300){
           n = 0;
-          std::cout << "HALLO BITCH" << std::endl;
+            double fqCar = gen.generateNote();
+            double fqMod = gen.generateRatio(fqCar);
+            std::cout << "random note " << fqCar << std::endl;
+            std::cout << "random ratio " << fqMod << std::endl;
+            carrier->setFrequency(fqCar);
+            modulator->setFrequency(fqMod);
         }
       }
     }
