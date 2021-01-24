@@ -4,7 +4,7 @@
 #include "math.h"
 #include "osc.h"
 #include "sine.h"
-#include "fm_synth.h"
+#include "synth.h"
 
 
 /*
@@ -19,29 +19,32 @@
 
 int main(int argc,char **argv)
 {
+  int n;
   // create a JackModule instance
   JackModule jack;
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  FM_Synth synth(samplerate);
-  Osc* carrier = synth.makeCar(1, 440.);
-  std::cout<<"carrier freq = "<<carrier->getFrequency()<<std::endl;
-  Osc* modulator = synth.makeMod(1, 4.);
-  std::cout<<"mod freq = "<<modulator->getFrequency()<<std::endl;
-
+  Synth synth(440, samplerate);
+  Osc* carrier = synth.selectOsc(1);
+  Osc* modulator = synth.selectOsc(1);
+  modulator->setFrequency(1);
   //assign a function to the JackModule::onProces
-  jack.onProcess = [&](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&carrier,&modulator,&n](jack_default_audio_sample_t *inBuf,
      jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
-
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = carrier->getSample()*modulator->getSample()/2.;
+      outBuf[i] = (carrier->getSample()*modulator->getSample())/2;
       carrier->tick();
       modulator->tick();
-
       if (i == 255){
-        std::cout << "this samp = " << outBuf[i] << std::endl;
+//        std::cout << "this samp = " << outBuf[i] << std::endl;
+        n += 1;
+//        std::cout << n << std::endl;
+        if (n == 300){
+          n = 0;
+          std::cout << "HALLO BITCH" << std::endl;
+        }
       }
     }
 
