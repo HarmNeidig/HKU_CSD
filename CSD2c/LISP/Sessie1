@@ -1,0 +1,13 @@
+(defun tel-op (a b)
+  (+ a b))
+
+(defun minus (a b)
+  (let ((c 0))
+   (setf c (- a b))
+   c))
+
+(defun boem()
+  (let ((antwoord nil))
+    (setf antwoord(minus 30 12))
+          (print antwoord)
+          ))
