@@ -14,22 +14,15 @@ void Bitcrusher::setBitDepth(int bitDepth){
   this->bitDepth = bitDepth;
 }
 
-void Bitcrusher::setGain(float gain){
-  this->gain = gain;
-}
-
 void Bitcrusher::getBitDepth(){
   std::cout << "bitDepth = " << bitDepth << std::endl;
-}
-
-float Bitcrusher::getGain(){
-  return gain;
 }
 
 std::vector<double> Bitcrusher::getSampleVector(){
   return samples;
 }
 
+// TODO: Replace Vector with array
 void Bitcrusher::makeSampleVector(int bitDepth){
   bitDepth-=1;
   if (bitDepth > 1 & bitDepth < 16){
@@ -50,7 +43,7 @@ double Bitcrusher::calculateSignal(double sample){
   int bits = samples.size();
   for (int i = 0; i < bits; i++){
     if ((sample >= samples[i]) && (sample <= samples[i+1])){
-      double crushedSample = samples[i] * gain;
+      double crushedSample = samples[i];
       return crushedSample;
     }
   }

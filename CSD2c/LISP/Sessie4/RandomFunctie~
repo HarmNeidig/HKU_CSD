@@ -1,0 +1,7 @@
+(defun my-number-generator (n)
+  (let (generated-number)
+    (dotimes (i n)
+      (setf generated-number (random 10))
+      (if (evenp generated-number)
+         (format t "~%even: ~A"generated-number)
+        (format t "~%uneven: ~A"generated-number)))))

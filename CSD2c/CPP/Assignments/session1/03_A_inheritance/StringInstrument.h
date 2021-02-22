@@ -5,6 +5,9 @@
 class StringInstrument : public Instrument {
 public:
   StringInstrument(std::string aSound);
+  void makePublicSound();
+private:
+  void makeSound();
 };
 
 #endif

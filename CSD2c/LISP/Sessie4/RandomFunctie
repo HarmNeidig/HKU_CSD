@@ -1,0 +1,6 @@
+(defun my-number-generator (n)
+  (let ((generated-total 0))
+  (let (generated-number)
+    (dotimes (i n)
+      (setf generated-number (random 10))
+      (setf generated-total(+ generated-number generated-total))))))

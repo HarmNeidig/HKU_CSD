@@ -29,13 +29,17 @@
  *
  * ------ HANDS-ON TIPS ------
  * • add protected method to the derived class. Try to use this method inside
- * the derived class. Can you use this method inside the main function?
- *
+ *   the derived class. Can you use this method inside the main function?
+ *    - I can use a public method to call the protected method, but I cannot
+ *      call the protected straight from the main.
  * • change the protected method created above to a private method.
+ *    - It still doesnt run in the main, because protected methods only are
+ *      availible for derived classes.
  * Can you still use this method inside the derived class?
- *
+ *    - 
  * • add another derived class, e.g. WoodwindInstrument
  * ---------------------------
+ */
 
 int main() {
 

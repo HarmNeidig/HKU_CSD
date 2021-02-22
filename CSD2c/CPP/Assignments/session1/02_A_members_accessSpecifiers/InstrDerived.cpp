@@ -8,6 +8,3 @@ std::string InstrDerived::getSound(){
 std::string InstrDerived::getMaterial(){
   return material;
 }
-
-
-#endif

@@ -37,7 +37,8 @@ int main(int argc,char **argv)
   sine.setFrequency(220);
 
   Bitcrusher bit;
-  bit.makeSampleVector(5);
+  bit.setGain(1.5);
+  bit.makeSampleVector(8);
   std::vector<double> sampleVector = bit.getSampleVector();
   write_vec(sampleVector);
   //assign a function to the JackModule::onProces
@@ -46,8 +47,9 @@ int main(int argc,char **argv)
 
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = bit.calculateSignal(sine.getSample()) * 0.1;
+      outBuf[i] = bit.calculateSignal(sine.getSample());
       sine.tick();
+      std::cout << bit.calculateSignal(sine.getSample()) << std::endl;
     }
 
     return 0;
