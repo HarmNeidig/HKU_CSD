@@ -46,12 +46,30 @@ void Bitcrusher::makeSampleVector(int bitDepth){
 }
 
 
-double Bitcrusher::calculateSignal(double sample){
+double Bitcrusher::calculateSignal(double sample, int foldmode){
   int bits = samples.size();
-  for (int i = 0; i < bits; i++){
-    if ((sample >= samples[i]) && (sample <= samples[i+1])){
-      double crushedSample = samples[i] * gain;
-      return crushedSample;
+  if (foldmode == 0){
+    for (int i = 0; i < bits; i++){
+      if ((sample >= samples[i]) && (sample <= samples[i+1])){
+        double crushedSample = samples[i] * gain;
+        return crushedSample;
+      }
+    }
+  }
+  if (foldmode == 1){
+    for (int i = 0; i < bits; i++){
+      if ((sample >= samples[i]) && (sample <= samples[i+1])){
+        double crushedSample = samples[i] * gain;
+        return crushedSample;
+      }
+    }
+  }
+  if (foldmode == 2){
+    for (int i = 0; i < bits; i++){
+      if ((sample >= samples[i]) && (sample <= samples[i+1])){
+        double crushedSample = samples[i] * gain;
+        return crushedSample;
+      }
     }
   }
 }
