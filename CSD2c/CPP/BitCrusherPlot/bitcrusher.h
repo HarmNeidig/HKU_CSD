@@ -16,17 +16,21 @@ public:
 
   void getBitDepth();
   float getGain();
-
+  void setFoldmode(int foldmode);
   std::vector<double> getSampleVector();
   //methods
   void makeSampleVector(int bitDepth);
-  double calculateSignal(double sample, int foldmode);
+  double calculateSignal(double sample);
 private:
+  bool foldingActivePos = false;
+  bool foldingActiveNeg = false;
+
   int foldmode;
   float gain;
   double crushedSample;
   std::vector<double> samples {};
   int bitDepth;
+  int bitDepthPow;
 };
 
 #endif
