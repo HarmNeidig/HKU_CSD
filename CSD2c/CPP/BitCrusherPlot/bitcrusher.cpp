@@ -78,35 +78,35 @@ double Bitcrusher::calculateSignal(double sample){
   // If the sample is 1.2 it folds back to 0.2
   // TODO: This mode still doesnt operate properly
   if (foldmode == 1){
-    if (sample > 1){
-      gain *= -1;
-      foldingActivePos = true;
-    } else if (sample < -1){
-      gain *= 1;
-      foldingActiveNeg = true;
-    } else {
+    if (sample < 1 && sample > -1){
       for (int i = 0; i < bits; i++){
         if ((sample >= samples[i]) && (sample <= samples[i+1])){
-          double crushedSample = samples[i];
-          if ((foldingActiveNeg == false) && (foldingActivePos == false)){
+            double crushedSample = samples[i];
             return crushedSample;
-          }
-          if (foldingActivePos == true){
-            if (sample <= 0){
-              gain*=1;
-              foldingActivePos = false;
-            }
-            return crushedSample;
-          }
-          if (foldingActiveNeg == true){
-            if (sample >= 0){
-              gain*=1;
-              foldingActiveNeg = false;
-            }
+        }
+      }
+    } else if(sample < -1){
+      excessSample = sample+1;
+      for (int i = 0; i < bits; i++){
+        if ((excessSample >= samples[i]) && (excessSample <= samples[i+1])){
+            double crushedSample = samples[i];
             return crushedSample;
           }
         }
-      }
+        if (excessSample <= -1){
+          excessSample = 0;
+        }
+    } else if (sample > 1){
+      excessSample = sample-1;
+      for (int i = 0; i < bits; i++){
+        if ((excessSample >= samples[i]) && (excessSample <= samples[i+1])){
+            double crushedSample = samples[i];
+            return crushedSample;
+          }
+        }
+        if (excessSample >= 1){
+          excessSample = 0;
+        }
     }
   }
 }

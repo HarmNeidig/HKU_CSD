@@ -13,7 +13,6 @@ public:
   // Setters and getters
   void setBitDepth(int bitDepth);
   void setGain(float gain);
-
   void getBitDepth();
   float getGain();
   void setFoldmode(int foldmode);
@@ -22,9 +21,8 @@ public:
   void makeSampleVector(int bitDepth);
   double calculateSignal(double sample);
 private:
-  bool foldingActivePos = false;
-  bool foldingActiveNeg = false;
-
+  // this variable is meant for the amount a sample goes above 1 or below -1.
+  double excessSample;
   int foldmode;
   float gain;
   double crushedSample;
