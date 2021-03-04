@@ -1,10 +1,10 @@
 import matplotlib.pylab as plt
 import numpy as np
 
-gain = 1.5
+gain = 3.5
 outList = []
 inList = []
-x = np.linspace(np.pi, (2 * np.pi), 44100)
+x = np.linspace(np.pi, (4 * np.pi), 44100)
 
 def wrap(x):
     amountFold = 0
@@ -57,40 +57,40 @@ def fold(x):
             #if sample is above 1 go to 0 and calulate excess
             if sample > 1 and amountFold == 0:
                 excessSample = sample - 1
-                foldedSample = sample - excessSample
+                foldedSample = 1 - excessSample
                 outList.append(foldedSample)
                 amountFold+=1
             #if sample is above 1 and its already folded
             elif sample > (1+amountFold) and amountFold != 0:
                 excessSample = sample - (1 + amountFold)
-                foldedSample = sample - excessSample
+                foldedSample = 1 - excessSample
                 outList.append(foldedSample)
                 amountFold+=1
             #if sample is below 1
             elif sample < (1+amountFold) and amountFold != 0:
                 amountFold-=1
                 excessSample = sample - (1 + amountFold)
-                foldedSample = sample - excessSample
+                foldedSample = 1 - excessSample
                 outList.append(foldedSample)
 
         elif sample < -1:
             #if sample is below -1 go to 0,
             if sample < -1 and amountFold == 0:
                 excessSample = sample + 1
-                foldedSample = sample + excessSample
+                foldedSample = -1 + np.absolute(excessSample)
                 outList.append(foldedSample)
                 amountFold+=1
             #if sample is below -1 go to 0,
             elif sample < (-1-amountFold) and amountFold != 0:
                 excessSample = sample + (amountFold + 1)
-                foldedSample = sample + excessSample
+                foldedSample = -1 + np.absolute(excessSample)
                 outList.append(foldedSample)
                 amountFold+=1
             #if sample is above -1, and rising
             elif sample > (-1-amountFold) and amountFold != 0:
                 amountFold-=1
                 excessSample = sample + (amountFold + 1)
-                foldedSample = sample + excessSample
+                foldedSample = -1 + np.absolute(excessSample)
                 outList.append(foldedSample)
 
 def make_inList(x):
@@ -101,7 +101,7 @@ def make_inList(x):
 make_inList(x)
 print(inList)
 
-fold(inList)
+wrap(inList)
 
 
 plt.plot(outList)
