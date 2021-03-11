@@ -14,14 +14,13 @@ void write_vec(const std::vector<double>& vec) {
 int main() {
   // create sine wave
   Bitcrusher bit;
-  bit.setFoldmode(0);
-  bit.setGain(2);
+  bit.setFoldmode(1);
+  bit.setGain(3);
   bit.makeSampleVector(6);
-  Sine sine(2, 48000);
+  Sine sine(3, 48000);
   std::vector<double> sampleVector = bit.getSampleVector();
   std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
   write_vec(sampleVector);
-  std::cout << "BIATCH " << "\n";
 
   // write 1 second of samples to file
   WriteToFile fileWriter("output.csv", true);

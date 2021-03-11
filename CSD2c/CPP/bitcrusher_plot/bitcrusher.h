@@ -29,6 +29,7 @@ private:
   // this variable is meant for the amount a sample goes above 1 or below -1.
   int amountFolds = 0;
   double excessSample = 0;
+  double foldedSample = 0;
   int foldmode;
   float gain;
   double crushedSample;

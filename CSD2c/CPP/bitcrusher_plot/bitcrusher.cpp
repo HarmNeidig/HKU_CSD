@@ -55,6 +55,7 @@ void Bitcrusher::makeSampleVector(int bitDepth){
 
 double Bitcrusher::clipping(double sample){
   sample*=gain;
+  amountFolds = 0;
   while (foldmode == 0){
     if (sample > 1){
       crushedSample = 1;
@@ -63,82 +64,90 @@ double Bitcrusher::clipping(double sample){
       crushedSample = -1;
       return crushedSample;
     } else {
-      crusher(sample);
+      return sample;
+    }
+  }
+  // fold mode 1 is a wrapping algo
+  // that means when a sample reaches 1.2
+  // it wraps back to 0.2
+  while (foldmode == 1){
+    std::cout << amountFolds;
+    // top folding
+    if (sample < 1 && sample > -1){
+      return sample;
+    } else if (sample > 1){
+      if (sample > 1 && amountFolds == 0){
+        excessSample = sample - 1;
+        amountFolds+=1;
+        return excessSample;
+      } else if (sample > (1+amountFolds) && amountFolds != 0){
+        excessSample = sample - (1 + amountFolds);
+        return excessSample;
+        amountFolds+=1;
+      } else if (sample < (1+amountFolds) && amountFolds != 0){
+        excessSample = sample - (1 + amountFolds);
+        return excessSample;
+        amountFolds-=1;
+      }
+  } else if (sample < -1){
+    if (sample < -1 && amountFolds == 0){
+      excessSample = sample + 1;
+      return excessSample;
+      amountFolds+=1;
+    } else if (sample < (-1-amountFolds) && amountFolds != 0){
+      excessSample = sample + (1 + amountFolds);
+      return excessSample;
+      amountFolds+=1;
+    } else if (sample > (1+amountFolds) && amountFolds != 0){
+      excessSample = sample + (1 + amountFolds);
+      return excessSample;
+      amountFolds-=1;
+      }
     }
   }
 
 
-  // foldmode 1 folds back from 0
-  // If the sample is 1.2 it folds back to 0.2
-  // TODO: This mode still doesnt operate properly
-  while (foldmode == 1){
-    // if between -1 and 1 return sample (no folding)
+  // fold mode 2 is a folding algo
+  // that means when a sample reaches 1.2
+  // it folds back to 0.8
+  // TODO: This algo still goes past 0.
+  while (foldmode == 2){
+    // top folding
     if (sample < 1 && sample > -1){
       return sample;
-    }
-    // bottom half folding (-)
-    else if (sample < -1){
-      if (amountFolds == 0){
-        excessSample = sample + 1;
-        if (excessSample != -1){
-          return excessSample;
-        }
-        if (excessSample <= -1){
-          amountFolds = amountFolds + 1;
-          return excessSample;
-        }
-      } else if (amountFolds != 0 && sample <= (-1-amountFolds)){
-        excessSample = sample + (amountFolds + 1);
-        if (excessSample != -1){
-          return excessSample;
-        }
-        if (excessSample <= -1){
-          amountFolds = amountFolds + 1;
-          return excessSample;
-        }
-      } else if (amountFolds != 0 && sample >= (-1-amountFolds)){
-        excessSample = sample + (amountFolds + 1);
-        if (excessSample != -1){
-          return excessSample;
-        }
-        if (excessSample >= 0){
-          amountFolds = amountFolds - 1;
-          return excessSample;
-        }
-        }
-    }
-    // top half folding (+)
-    else if (sample > 1){
-      // first fold
-      if (amountFolds == 0){
+    } else if (sample > 1){
+      if (sample > 1 && amountFolds == 0){
         excessSample = sample - 1;
-        if (excessSample != 1){
-          return excessSample;
-        }
-        if (excessSample > 1){
-          amountFolds+=1;
-          return excessSample;
-        }
-        // left of the fold
-      } else if (amountFolds != 0 && sample > (1+amountFolds)){
-        excessSample = sample - (amountFolds + 1);
-        if (excessSample < 1){
-          return excessSample;
-        }
-        if (excessSample > 1){
-          amountFolds = amountFolds + 1;
-          return excessSample;
-        }
-        // go from 1 to -1
-      } else if (amountFolds != 0 && sample < (1+amountFolds)){
-        excessSample = sample - (amountFolds + 1);
-        if (excessSample != 0){
-          return excessSample;
-        }
-        if (excessSample <= 0){
-          amountFolds = amountFolds - 1;
-          return excessSample;
-        }
+        foldedSample = 1 - excessSample;
+        return foldedSample;
+        amountFolds+=1;
+      } else if (sample > (1+amountFolds) && amountFolds != 0){
+        excessSample = sample - (1 + amountFolds);
+        foldedSample = 1 - excessSample;
+        return foldedSample;
+        amountFolds+=1;
+      } else if (sample < (1+amountFolds) && amountFolds != 0){
+        excessSample = sample - amountFolds;
+        foldedSample = 1 - excessSample;
+        return foldedSample;
+        amountFolds-=1;
+      }
+  } else if (sample < -1){
+    if (sample < -1 && amountFolds == 0){
+      excessSample = sample + 1;
+      foldedSample = -1 + std::abs(excessSample);
+      return foldedSample;
+      amountFolds+=1;
+    } else if (sample < (-1-amountFolds) && amountFolds != 0){
+      excessSample = sample + (1 + amountFolds);
+      foldedSample = -1 + std::abs(excessSample);
+      return foldedSample;
+      amountFolds+=1;
+    } else if (sample > (1+amountFolds) && amountFolds != 0){
+      excessSample = sample + amountFolds;
+      foldedSample = -1 + std::abs(excessSample);
+      return foldedSample;
+      amountFolds-=1;
       }
     }
   }
@@ -148,11 +157,10 @@ double Bitcrusher::clipping(double sample){
 double Bitcrusher::crusher(double sample){
   int bits = samples.size();
   for (int i = 0; i < bits; i++){
-    if ((sample > samples[i]) && (sample < samples[i+1])){
+    if ((sample > samples[i-1]) && (sample < samples[i])){
       double crushedSample = samples[i];
       return crushedSample;
     }
   }
 }
-
 // Modulo of ratio??
