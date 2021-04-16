@@ -57,17 +57,17 @@ void loop() {
     if (mpu.update()) {
         static uint32_t prev_ms = millis();
         if (millis() > prev_ms + 25) {
-          amp1.gain(GetRollScaled());
+          amp1.gain(GetPitchScaled());
           amp2.gain(GetYawScaled());
           Serial.print("Yaw: ");
           Serial.println(GetYawScaled());
           Serial.print("Roll: ");
-          Serial.println(GetRollScaled());
+          Serial.println(GetPitchScaled());
         }
     }
 }
 
-float GetRollScaled() {
+float GetPitchScaled() {
     float roll = (mpu.getPitch() / 180.);
     if (roll < 0){
       roll = abs(roll);
