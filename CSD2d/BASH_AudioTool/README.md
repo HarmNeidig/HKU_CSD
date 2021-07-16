@@ -24,7 +24,7 @@ Trim allows you to fade and trim a sample. The first parameter is the fade time,
 
 Delay
 
-Delay adds the same sound but delayed (duh). The first parameter is the initial delay time, the second is the long delay time.
+Delay adds the same sound but delayed. The first parameter is the initial delay time, the second is the long delay time.
 
 Reverb
 
