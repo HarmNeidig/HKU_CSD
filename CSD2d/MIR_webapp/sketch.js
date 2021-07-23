@@ -4,8 +4,46 @@ let mic;
 let pitch;
 let beginFreq = 0;
 let freq = 0;
-let gameStarted = false;
+// gamestate is phase of the game
+// start => playing => gameover
+let gameState = "start";
 let displayText = "Press spacebar to start game, press q to quit";
+var pipes = []
+const pipeWidth = 50;
+
+
+function pipe(){
+	// length of to top bar
+	this.top = random(height/2);
+	// length of to bottom bar
+	this.bottom = random(height/2);
+	this.x = width;
+	// width of the bars
+	this.w = 10;
+	this.speed = 2;
+
+	this.show = function(){
+		fill(255);
+		rect(this.x, 0, this.w, this.top);
+		rect(this.x, height-this.bottom, this.w, this.bottom);
+	}
+
+	this.update = function(){
+		this.x -= this.speed;
+	}
+}
+
+function player(){
+	this.x = 200;
+	this.y = height/2;
+
+	this.show = function(){
+		this.y -= freq-beginFreq;
+		fill('red');
+		circle(this.x,this.y, 20);
+		console.log(this.y);
+	}
+}
 
 function setup(){
 	audioContext = new AudioContext();
@@ -13,6 +51,7 @@ function setup(){
  	textAlign(CENTER);
  	mic = new p5.AudioIn();
  	mic.start(listening);
+	pipes.push(new pipe());
 }
 
 function listening() {
@@ -31,7 +70,21 @@ function draw(){
 	textAlign(CENTER, CENTER);
 	textSize(32);
 	text(displayText, width / 2, height - 150);
-	begin();
+	if (gameState == "start"){
+		begin();
+	}
+	if (gameState == "playing"){
+		merneer = new player();
+		if (frameCount % 40 == 0){
+			pipes.push(new pipe());
+		}
+
+		merneer.show();
+		for (var i=0; i<pipes.length; i++){
+			pipes[i].show();
+			pipes[i].update();
+		}
+	}
 }
 
 function modelLoaded() {
@@ -52,19 +105,19 @@ function gotPitch(error, frequency) {
 
 function begin() {
   if (keyCode === 81) {
-		gameStarted = false;
+		gameState = "gameover";
   } else if (keyCode === 32){
 		setBeginFreq(freq);
-    gameStarted = true;
+    gameState = "playing";
 		displayText = "";
 	}
 }
 
 function setBeginFreq(freq){
-	if (gameStarted == false){
+	if (gameState == false){
 		beginFreq = freq;
 		console.log("Begin frequency is ", beginFreq);
-	} else if (gameStarted == true){	
+	} else if (gameState == true){
 		return beginFreq;
 	}
 }
