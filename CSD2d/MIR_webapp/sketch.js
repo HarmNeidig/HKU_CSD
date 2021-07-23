@@ -3,24 +3,42 @@ const model_url = 'https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models/models/
 let mic;
 let pitch;
 let beginFreq = 0;
+var freqVariance = 0;
 let freq = 0;
+const WindowWidth  = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+const WindowHeight = window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight;
+
 // gamestate is phase of the game
 // start => playing => gameover
 let gameState = "start";
 let displayText = "Press spacebar to start game, press q to quit";
-var pipes = []
-const pipeWidth = 50;
+var pipes = [];
+var bg_lines = [];
 
+const pipeWidth = 165;
 
+function lines(){
+	// line(x1, y1, x2, y2)
+	this.width=random(WindowWidth);
+	this.height=random(WindowHeight);
+	this.show = function(){
+		fill(255);
+		line(this.width, 0, 0, this.height);
+		line(0, this.height, this.width, 0);
+	}
+	this.update = function(){
+
+	}
+}
 function pipe(){
 	// length of to top bar
 	this.top = random(height/2);
 	// length of to bottom bar
 	this.bottom = random(height/2);
-	this.x = width;
+	this.x = WindowWidth;
 	// width of the bars
 	this.w = 10;
-	this.speed = 2;
+	this.speed = 5;
 
 	this.show = function(){
 		fill(255);
@@ -28,30 +46,47 @@ function pipe(){
 		rect(this.x, height-this.bottom, this.w, this.bottom);
 	}
 
+	this.offscreen = function(){
+		if (this.x < -this.w){
+			return true;
+		} else {
+			false;
+		}
+	}
+
 	this.update = function(){
 		this.x -= this.speed;
 	}
+
+	this.hits = function(player){
+		if((player.y < this.top || player.y < height - this.bottom) &&
+			(player.x > this.x && player.x < this.x + this.w)){
+				return true;
+		}
+		return false;
+	}
 }
 
-function player(){
-	this.x = 200;
-	this.y = height/2;
-
-	this.show = function(){
-		this.y -= freq-beginFreq;
+function player(freqVariance){
+	this.x = WindowWidth/2;
+	this.y = WindowHeight/2;
+	this.lineX = WindowWidth/2;
+	this.speed = 2;
+	this.show = function(freqVariance){
 		fill('red');
-		circle(this.x,this.y, 20);
-		console.log(this.y);
+		this.newY = this.y-freqVariance;
+		circle(this.x,this.newY, 20);
 	}
 }
 
 function setup(){
 	audioContext = new AudioContext();
- 	let cnv = createCanvas(windowWidth, windowHeight);
+ 	let cnv = createCanvas(WindowWidth, WindowHeight);
  	textAlign(CENTER);
  	mic = new p5.AudioIn();
  	mic.start(listening);
 	pipes.push(new pipe());
+	bg = new lines();
 }
 
 function listening() {
@@ -69,21 +104,34 @@ function draw(){
 	fill(255);
 	textAlign(CENTER, CENTER);
 	textSize(32);
-	text(displayText, width / 2, height - 150);
+	text(displayText, WindowWidth / 2, height - 150);
 	if (gameState == "start"){
+		for(var i = 0; i>255;i++){
+			bg.drawlines();
+		}
 		begin();
 	}
 	if (gameState == "playing"){
-		merneer = new player();
-		if (frameCount % 40 == 0){
-			pipes.push(new pipe());
-		}
-
-		merneer.show();
-		for (var i=0; i<pipes.length; i++){
+		var freqVariance = freq - beginFreq;
+		for (var i=pipes.length-1; i>= 0; i--){
 			pipes[i].show();
 			pipes[i].update();
+
+			if (pipes[i].hits(player)==true){
+				console.log("boem");
+				gameState = "start";
+			}
+
+			if (pipes[i].offscreen()){
+				pipes.splice(i,1);
+			}
 		}
+
+		merneer = new player();
+		if (frameCount % 100 == 0){
+			pipes.push(new pipe());
+		}
+		merneer.show(freqVariance);
 	}
 }
 
@@ -114,10 +162,10 @@ function begin() {
 }
 
 function setBeginFreq(freq){
-	if (gameState == false){
+	if (gameState == "start"){
 		beginFreq = freq;
 		console.log("Begin frequency is ", beginFreq);
-	} else if (gameState == true){
+	} else if (gameState == "playing"){
 		return beginFreq;
 	}
 }
