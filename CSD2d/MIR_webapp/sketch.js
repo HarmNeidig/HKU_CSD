@@ -13,69 +13,85 @@ const WindowHeight = window.innerHeight|| document.documentElement.clientHeight|
 let gameState = "start";
 let displayText = "Press spacebar to start game, press q to quit";
 var pipes = [];
-var bg_lines = [];
 
-const pipeWidth = 165;
+const pipeWidth = 20;
+const pipeOpening = 400;
 
-function lines(){
-	// line(x1, y1, x2, y2)
-	this.width=random(WindowWidth);
-	this.height=random(WindowHeight);
-	this.show = function(){
-		fill(255);
-		line(this.width, 0, 0, this.height);
-		line(0, this.height, this.width, 0);
-	}
-	this.update = function(){
-
-	}
-}
 function pipe(){
 	// length of to top bar
 	this.top = random(height/2);
 	// length of to bottom bar
-	this.bottom = random(height/2);
+	this.bottom = this.top + pipeOpening;
 	this.x = WindowWidth;
 	// width of the bars
-	this.w = 10;
+	this.w = pipeWidth;
 	this.speed = 5;
-
+	this.highlight = false;
 	this.show = function(){
 		fill(255);
+		if (this.highlight) {
+      fill(255, 0, 0);
+    }
 		rect(this.x, 0, this.w, this.top);
-		rect(this.x, height-this.bottom, this.w, this.bottom);
-	}
+		rect(this.x, this.bottom, this.w, WindowHeight);
+	};
 
 	this.offscreen = function(){
 		if (this.x < -this.w){
 			return true;
 		} else {
-			false;
+			return false;
 		}
-	}
+	};
 
 	this.update = function(){
 		this.x -= this.speed;
-	}
+	};
 
-	this.hits = function(player){
-		if((player.y < this.top || player.y < height - this.bottom) &&
-			(player.x > this.x && player.x < this.x + this.w)){
+	// to fix:
+	// split function into  Hits top and Hits Bot
+	this.hits_bot = function(player){
+		if (this.x == (WindowWidth/2)){
+			if (player.y > this.bottom){
+				this.highlight = true;
 				return true;
+			} else {
+				return false;
+			}
 		}
+		this.highlight = false;
 		return false;
-	}
+	};
+	this.hits_top = function(player){
+		if (this.x == (WindowWidth/2)){
+			if (player.y < this.top){
+				this.highlight = true;
+				return true;
+			} else {
+				this.highlight = false;
+				return false;
+			}
+		}
+	};
 }
 
-function player(freqVariance){
+function player(){
 	this.x = WindowWidth/2;
 	this.y = WindowHeight/2;
-	this.lineX = WindowWidth/2;
 	this.speed = 2;
-	this.show = function(freqVariance){
+	this.show = function(){
 		fill('red');
+		circle(this.x,this.newY, 10);
+
+	};
+	this.update = function(freqVariance){
 		this.newY = this.y-freqVariance;
-		circle(this.x,this.newY, 20);
+		if (this.newY > height) {
+      this.newY = height;
+    }
+    if (this.newY < 0) {
+      this.newY = 0;
+    }
 	}
 }
 
@@ -86,7 +102,7 @@ function setup(){
  	mic = new p5.AudioIn();
  	mic.start(listening);
 	pipes.push(new pipe());
-	bg = new lines();
+	merneer = new player();
 }
 
 function listening() {
@@ -105,33 +121,41 @@ function draw(){
 	textAlign(CENTER, CENTER);
 	textSize(32);
 	text(displayText, WindowWidth / 2, height - 150);
+
 	if (gameState == "start"){
-		for(var i = 0; i>255;i++){
-			bg.drawlines();
-		}
 		begin();
 	}
 	if (gameState == "playing"){
+		// init player
 		var freqVariance = freq - beginFreq;
+		merneer.update(freqVariance);
+		merneer.show();
+
+		// show pipes
 		for (var i=pipes.length-1; i>= 0; i--){
 			pipes[i].show();
 			pipes[i].update();
 
-			if (pipes[i].hits(player)==true){
-				console.log("boem");
-				gameState = "start";
+			// checks if player hits pipes
+			if (pipes[i].hits_bot(merneer)==true){
+				console.log("boem bottom");
+			}
+			if (pipes[i].hits_top(merneer)==true){
+				console.log("boem top");
 			}
 
+			// deletes pipe if is offscreen
 			if (pipes[i].offscreen()){
-				pipes.splice(i,1);
+				pipes.splice(i, 1);
 			}
 		}
-
-		merneer = new player();
+		// makes new pipe after 100 frames
 		if (frameCount % 100 == 0){
 			pipes.push(new pipe());
 		}
-		merneer.show(freqVariance);
+	}
+	if (gameState == "gameover"){
+			background(255);
 	}
 }
 
