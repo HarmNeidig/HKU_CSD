@@ -7,17 +7,18 @@ var freqVariance = 0;
 let freq = 0;
 const WindowWidth  = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 const WindowHeight = window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight;
-
 // gamestate is phase of the game
 // start => playing => gameover
 let gameState = "start";
 let displayText = "Press spacebar to start game, press q to quit";
 var pipes = [];
-
+var pipe_color = [255];
+var score = 0;
 const pipeWidth = 20;
 const pipeOpening = 400;
 
 function pipe(){
+	this.color = pipe_color;
 	// length of to top bar
 	this.top = random(height/2);
 	// length of to bottom bar
@@ -28,10 +29,7 @@ function pipe(){
 	this.speed = 5;
 	this.highlight = false;
 	this.show = function(){
-		fill(255);
-		if (this.highlight) {
-      fill(255, 0, 0);
-    }
+		fill(this.color);
 		rect(this.x, 0, this.w, this.top);
 		rect(this.x, this.bottom, this.w, WindowHeight);
 	};
@@ -50,27 +48,27 @@ function pipe(){
 
 	// to fix:
 	// split function into  Hits top and Hits Bot
-	this.hits_bot = function(player){
-		if (this.x == (WindowWidth/2)){
-			if (player.y > this.bottom){
-				this.highlight = true;
+	this.hits = function(player){
+		if (this.x < WindowWidth/2+this.w && this.x > WindowWidth/2-this.w){
+			if (player.newY >= this.bottom){
 				return true;
-			} else {
-				return false;
+			} else if (player.newY <= this.top){
+				return true;
 			}
+		} else {
+			return false;
 		}
-		this.highlight = false;
-		return false;
 	};
-	this.hits_top = function(player){
-		if (this.x == (WindowWidth/2)){
-			if (player.y < this.top){
-				this.highlight = true;
-				return true;
-			} else {
-				this.highlight = false;
-				return false;
-			}
+
+	this.set_color = function(color){
+		this.color = color;
+	};
+
+	this.is_right = function(){
+		if(this.x > WindowWidth/2){
+			return true;
+		}	else {
+			return false;
 		}
 	};
 }
@@ -82,7 +80,6 @@ function player(){
 	this.show = function(){
 		fill('red');
 		circle(this.x,this.newY, 10);
-
 	};
 	this.update = function(freqVariance){
 		this.newY = this.y-freqVariance;
@@ -126,6 +123,10 @@ function draw(){
 		begin();
 	}
 	if (gameState == "playing"){
+		displayText = score;
+		textAlign(CENTER, LEFT);
+		textSize(32);
+		text(displayText, WindowWidth / 2, height - 150);
 		// init player
 		var freqVariance = freq - beginFreq;
 		merneer.update(freqVariance);
@@ -136,26 +137,23 @@ function draw(){
 			pipes[i].show();
 			pipes[i].update();
 
-			// checks if player hits pipes
-			if (pipes[i].hits_bot(merneer)==true){
-				console.log("boem bottom");
-			}
-			if (pipes[i].hits_top(merneer)==true){
-				console.log("boem top");
-			}
-
 			// deletes pipe if is offscreen
 			if (pipes[i].offscreen()){
 				pipes.splice(i, 1);
+				}
+			if (pipes[i].hits(merneer)==true){
+				pipes[i].set_color([255,0,0]);
+				score-=1;
+			} else {
+				pipes[i].set_color([0,255,0]);
+				score+=1;
 			}
 		}
-		// makes new pipe after 100 frames
+
+			// makes new pipe after 100 frames
 		if (frameCount % 100 == 0){
 			pipes.push(new pipe());
 		}
-	}
-	if (gameState == "gameover"){
-			background(255);
 	}
 }
 
