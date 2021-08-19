@@ -10,15 +10,14 @@ const WindowHeight = window.innerHeight|| document.documentElement.clientHeight|
 // gamestate is phase of the game
 // start => playing => gameover
 let gameState = "start";
-let displayText = "Press spacebar to start game, press q to quit";
+let displayText = "Make a tone and press play";
 var pipes = [];
-var pipe_color = [255];
 var score = 0;
 const pipeWidth = 20;
 const pipeOpening = 400;
 
 function pipe(){
-	this.color = pipe_color;
+	this.color = color('magenta');
 	// length of to top bar
 	this.top = random(height/2);
 	// length of to bottom bar
@@ -46,15 +45,9 @@ function pipe(){
 		this.x -= this.speed;
 	};
 
-	// to fix:
-	// split function into  Hits top and Hits Bot
 	this.hits = function(player){
-		if (this.x < WindowWidth/2+this.w && this.x > WindowWidth/2-this.w){
-			if (player.newY >= this.bottom){
-				return true;
-			} else if (player.newY <= this.top){
-				return true;
-			}
+		if (player.newY >= this.bottom||player.newY <= this.top){
+			return true;
 		} else {
 			return false;
 		}
@@ -64,8 +57,8 @@ function pipe(){
 		this.color = color;
 	};
 
-	this.is_right = function(){
-		if(this.x > WindowWidth/2){
+	this.in_centre = function(){
+		if(this.x <= WindowWidth/2+this.w && this.x >= WindowWidth/2-this.w){
 			return true;
 		}	else {
 			return false;
@@ -76,7 +69,6 @@ function pipe(){
 function player(){
 	this.x = WindowWidth/2;
 	this.y = WindowHeight/2;
-	this.speed = 2;
 	this.show = function(){
 		fill('red');
 		circle(this.x,this.newY, 10);
@@ -89,7 +81,7 @@ function player(){
     if (this.newY < 0) {
       this.newY = 0;
     }
-	}
+	};
 }
 
 function setup(){
@@ -98,8 +90,6 @@ function setup(){
  	textAlign(CENTER);
  	mic = new p5.AudioIn();
  	mic.start(listening);
-	pipes.push(new pipe());
-	merneer = new player();
 }
 
 function listening() {
@@ -123,36 +113,33 @@ function draw(){
 		begin();
 	}
 	if (gameState == "playing"){
+		merneer = new player();
 		displayText = score;
 		textAlign(CENTER, LEFT);
 		textSize(32);
 		text(displayText, WindowWidth / 2, height - 150);
-		// init player
 		var freqVariance = freq - beginFreq;
 		merneer.update(freqVariance);
 		merneer.show();
-
-		// show pipes
+		if (frameCount % 50 == 0){
+			pipes.push(new pipe());
+		}
 		for (var i=pipes.length-1; i>= 0; i--){
 			pipes[i].show();
 			pipes[i].update();
-
-			// deletes pipe if is offscreen
+			if (pipes[i].in_centre()==true){
+				console.log("in centre");
+				if (pipes[i].hits(merneer)==true){
+					pipes[i].set_color([255,0,0]);
+					score-=1;
+				} else {
+					pipes[i].set_color([0,255,0]);
+					score+=1;
+				}
+			}
 			if (pipes[i].offscreen()){
 				pipes.splice(i, 1);
-				}
-			if (pipes[i].hits(merneer)==true){
-				pipes[i].set_color([255,0,0]);
-				score-=1;
-			} else {
-				pipes[i].set_color([0,255,0]);
-				score+=1;
 			}
-		}
-
-			// makes new pipe after 100 frames
-		if (frameCount % 100 == 0){
-			pipes.push(new pipe());
 		}
 	}
 }
