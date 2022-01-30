@@ -5,25 +5,29 @@ from tkinter import filedialog
 from ttkthemes import ThemedTk
 import simpleaudio as sa
 import shutil
-
+import warnings
 global root
 global listedFilesIn
 global listedFilesOut
 pathlistIn = []
 pathlistOut = []
 
-output_dir = '/Users/harm/desktop/HKU_CSd/CSD2d/BASH_AudioTool/Audio_resources/sox_output'
-temp_in_dir = '/Users/harm/desktop/HKU_CSd/CSD2d/BASH_AudioTool/Audio_resources/sox_input'
+output_dir = '/Users/harm/desktop/oude_desktop/HKU_CSd/CSD2d/BASH_AudioTool/Audio_resources/sox_output'
+temp_in_dir = '/Users/harm/desktop/oude_desktop/HKU_CSd/CSD2d/BASH_AudioTool/Audio_resources/sox_input'
 
 ## addes files to input query
 def add_files():
     dir = filedialog.askdirectory()
     dir_path = os.listdir(dir)
     for i in range(len(dir_path)):
-        if dir_path[i].endswith('.wav') == True:
-            inputFileList.insert(i, dir_path[i])
-            pathlistIn.append(dir+'/'+dir_path[i])
-            listedFilesIn=+1
+        if ' ' in dir_path[i]:
+            print("ERROR: no whitespaces allowed in files")
+            print("white spaces detected in ",i,"th file.")
+        else:
+            if dir_path[i].endswith('.wav') == True:
+                inputFileList.insert(i, dir_path[i])
+                pathlistIn.append(dir+'/'+dir_path[i])
+                listedFilesIn=+1
 
 ## passes the path of the selected file
 def get_file_path_in():
@@ -64,8 +68,14 @@ def clear_list_in():
     pathlistIn.clear()
 
 def clear_list_out():
+    delete_folder_out()
     outputFileList.delete(0,tk.END)
     pathlistOut.clear()
+
+def delete_folder_out():
+    for i in pathlistOut:
+        print("Deleting: ",i)
+        os.remove(i)
 
 def get_value_listbox_in():
     selected_value = [inputFileList.get(i) for i in inputFileList.curselection()]
@@ -87,37 +97,47 @@ def export():
         output_file_path=output_dir+'/'+output
         # trim + fade
         if fxSelection.get() == 1:
-            os.system(
-            "./sox_01.sh "+input_file_path+" "+output_file_path+
-            " "+(str(fxParam1.get()))+" "+(str(fxParam2.get()))
-            )
+            if(fxParam1.get()>(fxParam2.get()/2.)):
+                print("error: fadetime must be at least half of length")
+            else:
+                os.system("./sox_01.sh "+input_file_path
+                +" "+output_file_path+" "+(str(fxParam1.get()))
+                +" "+(str(fxParam2.get())))
+                outputFileList.insert(0, output)
+                pathlistOut.append(output_dir+'/'+output)
+                listedFilesOut=+1
         # delay
         if fxSelection.get() == 2:
-            os.system(
-            "./sox_02.sh "+input_file_path+" "+output_file_path+
-            " "+(str(fxParam1.get()))+" "+(str(fxParam2.get()))
-            )
+            os.system("./sox_02.sh "+input_file_path
+            +" "+output_file_path+" "+(str(fxParam1.get()))
+            +" "+(str(fxParam2.get())))
+            outputFileList.insert(0, output)
+            pathlistOut.append(output_dir+'/'+output)
+            listedFilesOut=+1
         # reverb
         if fxSelection.get() == 3:
-            os.system(
-            "./sox_03.sh "+input_file_path+" "+output_file_path+
-            " "+(str(fxParam1.get()))+" "+(str(fxParam2.get()))
-            )
+            os.system("./sox_03.sh "+input_file_path
+            +" "+output_file_path+" "+(str(fxParam1.get()))
+            +" "+(str(fxParam2.get())))
+            outputFileList.insert(0, output)
+            pathlistOut.append(output_dir+'/'+output)
+            listedFilesOut=+1
         # distorion
         if fxSelection.get() == 4:
-            os.system(
-            "./sox_04.sh "+input_file_path+" "+output_file_path+
-            " "+(str(fxParam1.get()*2))+" "+(str(fxParam2.get()*2))
-            )
+            os.system("./sox_04.sh "+input_file_path
+            +" "+output_file_path+" "+(str(fxParam1.get()*2))
+            +" "+(str(fxParam2.get()*2)))
+            outputFileList.insert(0, output)
+            pathlistOut.append(output_dir+'/'+output)
+            listedFilesOut=+1
         # tremolo
         if fxSelection.get() == 5:
-            os.system(
-            "./sox_05.sh "+input_file_path+" "+output_file_path+
-            " "+(str(fxParam1.get()))+" "+(str(fxParam2.get()*10))
-            )
-        outputFileList.insert(0, output)
-        pathlistOut.append(output_dir+'/'+output)
-        listedFilesOut=+1
+            os.system("./sox_05.sh "+input_file_path
+            +" "+output_file_path+" "+ (str(fxParam1.get()))
+            +" "+(str(fxParam2.get()*10)))
+            outputFileList.insert(0, output)
+            pathlistOut.append(output_dir+'/'+output)
+            listedFilesOut=+1
 
 def output_list_to_input():
     clear_list_in()
@@ -163,6 +183,7 @@ fxParamSlider2 = ttk.Scale(root, from_=1, to=10, variable=fxParam2)
 outputFileTxt = ttk.Label(root, text="Select output file")
 outputFileList = tk.Listbox()
 outputFileList.config(bg='grey75')
+outputFolderClearButton = ttk.Button(root, text='Delete all output files', command=clear_list_out)
 outputListToInputListButton = ttk.Button(root, text='Output list to inputlist', command=output_list_to_input)
 
 
@@ -198,6 +219,7 @@ exportButton.pack()
 playButton2.pack()
 outputFileTxt.pack()
 outputFileList.pack(expand=True)
+outputFolderClearButton.pack()
 outputListToInputListButton.pack()
 ## application main loop
 root.mainloop()
